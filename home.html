@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home - My Blog
+{% endblock %}
+
+
+{% block content %}
+
+<section class="hero">
+
+    <h1>Welcome to My Blog</h1>
+
+    <p>
+        Thoughts, tutorials, projects and ideas.
+    </p>
+
+    <a href="{{ url_for('create') }}" class="button">
+        Write a Post
+    </a>
+
+</section>
+
+
+<section class="posts-section">
+
+    <div class="section-heading">
+        <h2>Latest Posts</h2>
+    </div>
+
+
+    {% if posts %}
+
+        <div class="post-grid">
+
+            {% for post in posts %}
+
+                <article class="post-card">
+
+                    <span class="category">
+                        {{ post["category"] or "General" }}
+                    </span>
+
+                    <h3>
+                        <a href="{{ url_for('post', post_id=post['id']) }}">
+                            {{ post["title"] }}
+                        </a>
+                    </h3>
+
+                    <p class="date">
+                        {{ post["created_at"] }}
+                    </p>
+
+                    <p>
+                        {{ post["content"][:180] }}
+                        {% if post["content"]|length > 180 %}
+                            ...
+                        {% endif %}
+                    </p>
+
+                    <a
+                        href="{{ url_for('post', post_id=post['id']) }}"
+                        class="read-more"
+                    >
+                        Read more →
+                    </a>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h3>No posts yet</h3>
+
+            <p>
+                Start writing your first blog post.
+            </p>
+
+            <a href="{{ url_for('create') }}" class="button">
+                Create First Post
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}
